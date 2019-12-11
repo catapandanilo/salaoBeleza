@@ -32,7 +32,7 @@ O sistema é para auxiliar clientes e profissionais dentro de um Salão de Belez
 
 
 ## Principais tecnologias utilizadas
-- [Java] 
+- [Java](https://www.java.com/pt_BR/download/faq/develop.xml) 
 - [Springboot](https://spring.io/projects/spring-boot)
 - [Springsecurity](https://spring.io/projects/spring-security)
 - [SpringMVC](https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc)
