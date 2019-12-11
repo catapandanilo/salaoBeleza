@@ -1,0 +1,33 @@
+package br.com.catapan.salaobeleza.domain.profissional;
+
+import java.util.Comparator;
+
+import br.com.catapan.salaobeleza.domain.profissional.SearchFilter.Order;
+
+public class ProfissionalComparator implements Comparator<Profissional> {
+
+	private SearchFilter filter;
+	private String cep;
+	
+	public ProfissionalComparator(SearchFilter filter, String cep) {
+		this.filter = filter;
+		this.cep = cep;
+	}
+
+	@Override
+	public int compare(Profissional r1, Profissional r2) {
+		int result;
+		
+		if (filter.getOrder() == Order.Taxa) {
+			result = r1.getTaxaEntrega().compareTo(r2.getTaxaEntrega());
+		} 
+		else if (filter.getOrder() == Order.Tempo) {
+			result = r1.calcularTempoEntrega(cep).compareTo(r2.calcularTempoEntrega(cep));
+		} 
+		else {
+			throw new IllegalStateException("O valor de ordenação " + filter.getOrder() + " não é válido");
+		}
+		
+		return filter.isAsc() ? result : -result;
+	}
+}

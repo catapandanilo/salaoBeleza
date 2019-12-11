@@ -1,0 +1,282 @@
+*
+{
+	font-family: "Verdana";
+}
+
+input#inputLargo
+{
+	width: 300px;
+}
+
+body
+{
+	text-align: center;
+	margin: 0 0 0 0;
+}
+
+div#divLogotipoSistema
+{
+	background-color: hotpink;
+	width: 100%;
+	height: 70px;
+}
+
+div#divUsuarioLogado
+{
+	background-color: hotpink;
+	width: 100%;
+	height: auto;
+	line-height: 40px;
+	color: #ffffff;
+}
+
+
+img#imgLogotipoSistema
+{
+	height: 60%;
+    vertical-align: middle;
+}
+
+img#imgIconeCarrinho
+{
+	height: 50px;
+}
+
+div#divCategoriasServicoGeral
+{
+	overflow: hidden;
+	display: flex;
+	justify-content: space-between;
+}
+
+div#divCategoriasServicoOpcao
+{
+	background-color: #ffffff;
+	width: 20%;
+	height: 130px;
+	float: left;
+	
+}
+
+div#divProfissionaisOpcao
+{
+	background-color: #ffffff;
+	width: 400px;
+	height: auto;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+div#divLarguraPadrao
+{
+	width: 400px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+img#imgCategoriaServico
+{
+	height: 50%;
+}
+
+img#imgProfissionalOpcao
+{
+	height: 130px;
+	
+}
+
+img#imgProfissionalBusca
+{
+	height: 130px;
+}
+
+span#ProfissionalOpcaoTitulo
+{
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+
+span#spanAuxiliarDeAlinhamentoVertical
+{
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+fieldset
+{
+	margin-left: auto;
+	margin-right: auto;
+	width: 400px;
+	border-width: 0px;
+}
+
+fieldset#fieldsetFiltros
+{
+	border-width: 3px;
+}
+
+h1
+{
+	color: hotpink;
+	background-color: #ffffff;
+	text-transform: uppercase;
+	font-style: italic;
+	font-size: 20px;
+	padding: 5px;
+	width: 400px;
+	border-left: 10px solid hotpink; 
+	border-right: 10px solid hotpink;
+	border-top: 2px solid hotpink;
+	border-bottom: 2px solid hotpink;
+	border-radius: 30px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+img#imgIconeUsuario,
+img#imgIconeProfissional
+{
+	width: 100px;
+}
+
+
+input,
+select,
+textarea
+{
+	border: 2px solid hotpink;
+	height: 35px;
+    vertical-align: middle;
+	margin-bottom: 6px;
+}
+
+.inputError
+{
+	border: 2px solid #FF2828;
+}
+
+textarea
+{
+	width: 300px;
+	height: 100px;
+}
+
+
+
+input[type=text],
+input[type=password],
+select
+{
+	font-size: 16px;
+	width: 140px;
+	padding-left: 8px;
+}
+
+
+
+input[type=button],
+input[type=submit]
+{
+	background-color: hotpink;
+	border-bottom: 3px solid #BF0261;
+	border-top: 1px solid #BF0261;
+	border-right: 1px solid #BF0261;
+	border-left: 1px solid #BF0261;
+	color: #ffffff;
+	font-weight: bold;
+	text-transform: uppercase;
+	border-radius: 5px;
+	padding: 5px 8px;
+}
+
+input[type=button]:hover,
+input[type=submit]:hover
+{
+	background-color: #FFA8D4;
+	border-color: hotpink;
+}
+
+input#inputSelecionado
+{
+	background-color: #FFA8D4;
+	border-color: hotpink;
+}
+
+div#mensagemDeErro
+{
+	background-color: #d40000;
+	width: 400px;
+	border-radius: 5px;
+	padding: 10px;
+	color: #ffffff;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+div#mensagemDeSucesso
+{
+	background-color: #0BAF00;
+	width: 400px;
+	border-radius: 5px;
+	padding: 10px;
+	color: #ffffff;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+a
+{
+	color: #000000;
+	text-decoration: none;
+}
+
+a:hover
+{
+	text-decoration: underline;
+}
+
+table
+{
+	margin-left: auto;
+	margin-right: auto;
+}
+
+table
+{
+	background-color: #ffffff;
+	font-size: 14px;
+	border-spacing: 1px;
+	border-collapse: separate;
+}
+
+th
+{
+	background-color: hotpink;
+	color: #ffffff;
+	text-transform: uppercase;
+	padding: 3px;
+}
+
+tr:nth-child(even)
+{
+	background-color: #dddddd;
+}
+
+tr:nth-child(odd)
+{
+	background-color: #ffffff;
+}
+
+td
+{
+	padding: 3px;
+}
+
+
+
+
+
+
+

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html	
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+	
+    <head>
+        <title>Salão de Beleza Márcia Catapan</title>
+        <meta charset="UTF-8"/>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/sb_estiloSistema.css}"/>
+        <script type="text/javascript" th:src="@{/js/script.js}"></script>
+    </head>
+    <body>
+        <header>
+            <div id="divLogoTipoSistema">
+                <span id="spanAuxAlinhamentoVertical"></span>
+                <a th:href="${link} == null ? @{/} : ${link}">
+                    <img id="imgLogoTipoSistema" th:src="@{/images/sb_logotipoSistema.png}"/> 
+                </a>
+            </div>
+			<div id="divUsuarioLogado" th:if="${#authentication.principal != 'anonymousUser'}">
+				<span th:text="'Olá, ' + ${#authentication.principal.usuario.nome} + '!'"></span>
+				<div th:if="${session.carrinho != null}" style="display: inline;">
+					<br /><a th:href="@{/cliente/carrinho/visualizar}"><img th:src="@{/images/sb_iconeCarrinho.png}" id="imgIconeCarrinho" /></a>
+				</div>
+			</div>
+        </header>
+        <br/><br/>
+        <!-- Cabeçalho - Fim -->
+
+		<!-- Conteúdo -->
+		<div layout:fragment="content"></div>
+
+        <!-- Rodapé - Início -->
+		<br/><br/>
+    </body>
+</html>

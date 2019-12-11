@@ -1,0 +1,115 @@
+package br.com.catapan.salaobeleza.application.service;
+
+
+
+import java.util.Iterator;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import br.com.catapan.salaobeleza.domain.cliente.Cliente;
+import br.com.catapan.salaobeleza.domain.cliente.ClienteRepository;
+import br.com.catapan.salaobeleza.domain.profissional.ItemServico;
+import br.com.catapan.salaobeleza.domain.profissional.ItemServicoRepository;
+import br.com.catapan.salaobeleza.domain.profissional.Profissional;
+import br.com.catapan.salaobeleza.domain.profissional.ProfissionalComparator;
+import br.com.catapan.salaobeleza.domain.profissional.ProfissionalRepository;
+import br.com.catapan.salaobeleza.domain.profissional.SearchFilter;
+import br.com.catapan.salaobeleza.domain.profissional.SearchFilter.SearchType;
+import br.com.catapan.salaobeleza.util.SecurityUtils;
+
+@Service
+public class ProfissionalService {
+	
+	@Autowired
+	private ProfissionalRepository profissionalRepository;
+	
+	@Autowired
+	private ClienteRepository clienteRepository;
+	
+	@Autowired
+	private ItemServicoRepository itemServicoRepository;
+	
+	@Autowired
+	private ImageService imageService;
+	
+	@Transactional
+	public void saveProfissional(Profissional profissional) throws ValidationException {
+		if (!validateEmail(profissional.getEmail(), profissional.getId())) {
+			throw new ValidationException("O e-mail está duplicado");
+		}
+		
+		if (profissional.getId() != null) {
+			Profissional prossionalDB = profissionalRepository.findById(profissional.getId()).orElseThrow();
+			profissional.setSenha(prossionalDB.getSenha());			//direto do bd pq nao vem da requisicao
+			profissional.setLogotipo(prossionalDB.getLogotipo());	//direto do bd pq nao vem da requisicao
+			profissionalRepository.save(profissional);
+		
+		} else {
+			profissional.encryptPassword();
+			profissional = profissionalRepository.save(profissional);
+			profissional.setLogotipoFileName();
+			imageService.uploadLogotipo(profissional.getLogotipoFile(), profissional.getLogotipo());
+		}
+	}
+	
+	private boolean validateEmail(String email, Integer id) {
+		Cliente cliente = clienteRepository.findByEmail(email);
+		if (cliente != null) {
+			return false;
+		}
+		
+		Profissional profissional = profissionalRepository.findByEmail(email);
+		
+		if (profissional != null) {
+			if (id == null) {
+				return false;
+			}
+			if(!profissional.getId().equals(id)) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+	
+	public List<Profissional> search(SearchFilter filter) {
+		List<Profissional> profissionais;
+		
+		if (filter.getSearchType() == SearchType.Texto) {
+			profissionais = profissionalRepository.findByNomeIgnoreCaseContaining(filter.getTexto());
+		
+		} else if (filter.getSearchType() == SearchType.Categoria) {
+			profissionais = profissionalRepository.findByCategorias_Id(filter.getCategoriaId());
+		
+		} else {
+			throw new IllegalStateException("O tipo de busca " + filter.getSearchType() + " não é suportado");
+		}
+		
+		Iterator<Profissional> it = profissionais.iterator();
+		
+		while (it.hasNext()) {
+			Profissional profissional = it.next();
+			double taxaEntrega = profissional.getTaxaEntrega().doubleValue();
+			
+			if (filter.isEntregaGratis() && taxaEntrega > 0
+					|| !filter.isEntregaGratis() && taxaEntrega == 0) {
+				it.remove();
+			}
+		}
+		
+		ProfissionalComparator comparator = new ProfissionalComparator(filter, SecurityUtils.loggedCliente().getCep());
+		profissionais.sort(comparator);
+		
+		return profissionais;
+	}
+	
+	@Transactional
+	public void saveItemItemServico(ItemServico itemServico) {
+		itemServico = itemServicoRepository.save(itemServico);
+		itemServico.setImagemFileName();
+		imageService.uploadServico(itemServico.getImagemFile(), itemServico.getImagem());
+	}
+}

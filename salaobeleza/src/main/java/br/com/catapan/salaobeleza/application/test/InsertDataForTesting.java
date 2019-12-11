@@ -1,0 +1,233 @@
+package br.com.catapan.salaobeleza.application.test;
+
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.ContextRefreshedEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
+
+import br.com.catapan.salaobeleza.domain.cliente.Cliente;
+import br.com.catapan.salaobeleza.domain.cliente.ClienteRepository;
+import br.com.catapan.salaobeleza.domain.pedido.Pedido;
+import br.com.catapan.salaobeleza.domain.pedido.PedidoRepository;
+import br.com.catapan.salaobeleza.domain.profissional.CategoriaProfissional;
+import br.com.catapan.salaobeleza.domain.profissional.CategoriaProfissionalRepository;
+import br.com.catapan.salaobeleza.domain.profissional.ItemServico;
+import br.com.catapan.salaobeleza.domain.profissional.ItemServicoRepository;
+import br.com.catapan.salaobeleza.domain.profissional.Profissional;
+import br.com.catapan.salaobeleza.domain.profissional.ProfissionalRepository;
+import br.com.catapan.salaobeleza.util.StringUtils;
+
+@Component
+public class InsertDataForTesting {
+	
+	@Autowired
+	private ClienteRepository clienteRepository;
+	
+	@Autowired
+	private ProfissionalRepository profissionalRepository;
+	
+	@Autowired
+	private CategoriaProfissionalRepository categoriaProfissionalRepository;
+	
+	@Autowired
+	private ItemServicoRepository itemServicoRepository;
+	
+	@Autowired
+	private PedidoRepository pedidoRespository;
+
+	@EventListener
+	public void onApplicationEvent(ContextRefreshedEvent event) {
+		Cliente[] clientes = cadastrarClientes();
+		Profissional[] profissionais = cadastrarProfissionais();
+		cadastarItensServico(profissionais);
+		
+		cadastrarPedidos(clientes, profissionais);
+	}
+	
+	private void cadastrarPedidos(Cliente[] clientes, Profissional[] profissionais) {
+		Pedido p = new Pedido();
+		p.setData(LocalDateTime.now());
+		p.setCliente(clientes[0]);
+		p.setProfissional(profissionais[0]);
+		p.setTotal(BigDecimal.valueOf(12.0));
+		pedidoRespository.save(p);	
+	}
+	
+	private Profissional[] cadastrarProfissionais() {
+		List<Profissional> profissionais = new ArrayList<>(); 
+		
+		CategoriaProfissional categoriaCorte = categoriaProfissionalRepository.findById(1).orElseThrow();
+		CategoriaProfissional categoriaLavarCabelo = categoriaProfissionalRepository.findById(2).orElseThrow();
+		CategoriaProfissional categoriaDepilacao = categoriaProfissionalRepository.findById(3).orElseThrow();
+		CategoriaProfissional categoriaQuimica = categoriaProfissionalRepository.findById(4).orElseThrow();
+		CategoriaProfissional categoriaPenteado = categoriaProfissionalRepository.findById(5).orElseThrow();
+		CategoriaProfissional categoriaMaquiagem = categoriaProfissionalRepository.findById(6).orElseThrow();
+		
+		Profissional r = new Profissional();
+		r.setNome("Márcia");
+		r.setEmail("p1@profissionalbeleza.com.br");
+		r.setSenha(StringUtils.encrypt("p"));
+		r.setCnpj("00000000000101");
+		r.setTelefone("99876671010");
+		r.getCategorias().add(categoriaCorte);
+		r.getCategorias().add(categoriaLavarCabelo);
+		r.getCategorias().add(categoriaPenteado);
+		r.setLogotipo("0001-logo.png");
+		profissionalRepository.save(r);
+		profissionais.add(r);
+		
+		r = new Profissional();
+		r.setNome("Bel");
+		r.setEmail("p2@profissionalbeleza.com.br");
+		r.setSenha(StringUtils.encrypt("p"));
+		r.setCnpj("00000000000102");
+		r.setTelefone("99876671011");
+		r.getCategorias().add(categoriaPenteado);
+		r.getCategorias().add(categoriaMaquiagem);
+		r.setLogotipo("0002-logo.png");
+		profissionalRepository.save(r);
+		profissionais.add(r);
+		
+		r = new Profissional();
+		r.setNome("Maria");
+		r.setEmail("p3@profissionalbeleza.com.br");
+		r.setSenha(StringUtils.encrypt("p"));
+		r.setCnpj("00000000000103");
+		r.setTelefone("99876671012");
+		r.getCategorias().add(categoriaLavarCabelo);
+		r.getCategorias().add(categoriaPenteado);
+		r.setLogotipo("0003-logo.png");
+		profissionalRepository.save(r);
+		profissionais.add(r);
+		
+		r = new Profissional();
+		r.setNome("Dani");
+		r.setEmail("p4@profissionalbeleza.com.br");
+		r.setSenha(StringUtils.encrypt("p"));
+		r.setCnpj("00000000000104");
+		r.setTelefone("99876671013");
+		r.getCategorias().add(categoriaDepilacao);
+		r.getCategorias().add(categoriaQuimica);
+		r.setLogotipo("0004-logo.png");
+		profissionalRepository.save(r);
+		profissionais.add(r);
+		
+		Profissional[] array = new Profissional[profissionais.size()]; 
+		return profissionais.toArray(array);
+	}
+	
+	private Cliente[] cadastrarClientes() {
+		List<Cliente> clientes = new ArrayList<>(); 
+		
+		Cliente c = new Cliente();
+		c.setNome("Danilo");
+		c.setEmail("danilo@profissionalbeleza.com.br");
+		c.setSenha(StringUtils.encrypt("c"));
+		c.setCep("89300100");
+		c.setCpf("03099887666");
+		c.setTelefone("99355430001");
+		clientes.add(c);
+		clienteRepository.save(c);
+		
+		c = new Cliente();
+		c.setNome("Daiane");
+		c.setEmail("daiane@profissionalbeleza.com.br");
+		c.setSenha(StringUtils.encrypt("c"));
+		c.setCep("89300101");
+		c.setCpf("03099887677");
+		c.setTelefone("99355430002");
+		clientes.add(c);
+		clienteRepository.save(c);
+		
+		Cliente[] array = new Cliente[clientes.size()]; 
+		return clientes.toArray(array);
+	}
+	
+	private void cadastarItensServico(Profissional[] profissional) {
+		ItemServico ic = new ItemServico();
+		ic.setCategoria("Corte");
+		ic.setDescricao("Corte Simples");
+		ic.setNome("Corte Simples");
+		ic.setPreco(BigDecimal.valueOf(20.0));
+		ic.setProfissional(profissional[0]);
+		ic.setDestaque(false);
+		ic.setImagem("0001-servico.png");
+		itemServicoRepository.save(ic);
+		
+		ic = new ItemServico();
+		ic.setCategoria("Penteado");
+		ic.setDescricao("Penteado igual de filme");
+		ic.setNome("Penteado de Filme");
+		ic.setPreco(BigDecimal.valueOf(25.5));
+		ic.setProfissional(profissional[0]);
+		ic.setDestaque(false);
+		ic.setImagem("0006-servico.png");
+		itemServicoRepository.save(ic);
+		
+		ic = new ItemServico();
+		ic.setCategoria("Lavar Cabelo");
+		ic.setDescricao("Lavar o cabelo com shampoo e condicionador normais");
+		ic.setNome("Lavar Cabelo Simples");
+		ic.setPreco(BigDecimal.valueOf(10));
+		ic.setProfissional(profissional[0]);
+		ic.setDestaque(false);
+		ic.setImagem("0007-servico.png");
+		itemServicoRepository.save(ic);
+		
+		ic = new ItemServico();
+		ic.setCategoria("Química");
+		ic.setDescricao("Tintura no cabelo com produtos nacionais");
+		ic.setNome("Tintura no cabelo Simples");
+		ic.setPreco(BigDecimal.valueOf(45.5));
+		ic.setProfissional(profissional[0]);
+		ic.setDestaque(true);
+		ic.setImagem("0005-servico.png");
+		itemServicoRepository.save(ic);
+		
+		ic = new ItemServico();
+		ic.setCategoria("Química");
+		ic.setDescricao("Tintura no cabelo com produtos importados");
+		ic.setNome("Tintura no cabelo Especial");
+		ic.setPreco(BigDecimal.valueOf(38.9));
+		ic.setProfissional(profissional[3]);
+		ic.setDestaque(false);
+		ic.setImagem("0002-servico.png");
+		itemServicoRepository.save(ic);
+		
+		ic = new ItemServico();
+		ic.setCategoria("Depilação");
+		ic.setDescricao("Depição com cera mágica");
+		ic.setNome("Depilação Mágica");
+		ic.setPreco(BigDecimal.valueOf(15));
+		ic.setProfissional(profissional[3]);
+		ic.setDestaque(false);
+		ic.setImagem("0004-servico.png");
+		itemServicoRepository.save(ic);
+		
+		ic = new ItemServico();
+		ic.setCategoria("Penteado");
+		ic.setDescricao("Penteado igual de filme");
+		ic.setNome("Penteado de Filme");
+		ic.setPreco(BigDecimal.valueOf(25.5));
+		ic.setProfissional(profissional[1]);
+		ic.setDestaque(false);
+		ic.setImagem("0006-servico.png");
+		itemServicoRepository.save(ic);
+		
+		ic = new ItemServico();
+		ic.setCategoria("Maquiagem");
+		ic.setDescricao("Maquiagem completa de noiva");
+		ic.setNome("Maquiagem Noiva");
+		ic.setPreco(BigDecimal.valueOf(116.8));
+		ic.setProfissional(profissional[1]);
+		ic.setDestaque(false);
+		ic.setImagem("0003-servico.png");
+		itemServicoRepository.save(ic);
+	}
+}

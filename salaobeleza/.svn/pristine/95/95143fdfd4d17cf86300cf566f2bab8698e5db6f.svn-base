@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout}" th:with="link=@{/profissional/home}">
+	
+	<body>
+		<div layout:fragment="content">
+			<div>
+				<h1>Configurações</h1>
+				<input type="button" value="Dados básicos" th:onclick="'location.href=\'' + @{/profissional/edit} + '\';'" /><br />
+				<input type="button" value="Servicos" th:onclick="'location.href=\'' + @{/profissional/servicos} + '\';'" /><br />
+				<input type="button" value="Relatório de Pedidos" th:onclick="'location.href=\'' + @{/profissional/relatorio/pedidos} + '\';'" /><br />
+				<input type="button" value="Relatório de Itens" th:onclick="'location.href=\'' + @{/profissional/relatorio/itens} + '\';'" /><br />
+			</div>
+			<br /><br />
+			
+			<div>
+				<h1>Pedidos em andamento</h1>
+				<div th:each="pedido : ${pedidos}">
+					<input type="button" th:value="${pedido.formattedId} + ' - ' + ${#temporals.format(pedido.data, 'dd/MM/yyyy HH:mm')}" 
+						th:onclick="'location.href=\'' + @{/profissional/pedido} + '?pedidoId=' + ${pedido.id} + '\';'" /><br />
+				</div>
+			</div>
+			<br /><br />
+
+			<input type="button" value="Sair" th:onclick="'location.href=\'' + @{/logout} + '\';'" /><br />
+		</div>
+	</body>
+</html>
+

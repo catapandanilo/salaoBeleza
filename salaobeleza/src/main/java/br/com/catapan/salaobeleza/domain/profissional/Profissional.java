@@ -1,0 +1,81 @@
+package br.com.catapan.salaobeleza.domain.profissional;
+
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import br.com.catapan.salaobeleza.domain.usuario.Usuario;
+import br.com.catapan.salaobeleza.infrastructure.web.validator.UploadConstraint;
+import br.com.catapan.salaobeleza.util.FileType;
+import br.com.catapan.salaobeleza.util.StringUtils;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@SuppressWarnings("serial")
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = true)
+@Entity
+@Table(name = "profissional")
+public class Profissional extends Usuario{
+	
+	@NotBlank(message = "O CNPJ não pode ser vazio")
+	@Pattern(regexp = "[0-9]{14}" , message = "O CPF possui formato inválido")
+	@Column(length = 14, nullable = false)
+	private String cnpj;
+	
+	@Size(max = 80)
+	private String logotipo;
+	
+	//transient fica em memoria
+	@UploadConstraint(acceptedTypes = { FileType.PNG, FileType.JPG }, message = "O arquivo não é um arquivo imagem válido")
+	private transient MultipartFile logotipoFile;
+
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(
+			name = "profissional_has_categoria",
+			joinColumns = @JoinColumn(name = "profissional_id"),
+			inverseJoinColumns = @JoinColumn(name = "categoria_servico_id")
+	)
+	@Size(min = 1, message = "O salão precisa ter pelo menos uma categoria")
+	@ToString.Exclude
+	private Set<CategoriaProfissional> categorias = new HashSet<>(0);
+	
+	@OneToMany(mappedBy = "profissional")
+	private Set<ItemServico> itensCardapio = new HashSet<>(0);
+	
+	public void setLogotipoFileName() {
+		if (getId() == null) {
+			throw new IllegalStateException("É preciso primeiro gravar o registro");
+		}
+		
+		this.logotipo = String.format("%04d-logo.%s", getId(), FileType.of(logotipoFile.getContentType()).getExtension());
+	}
+	
+	public String getCategoriasAsText() {
+		Set<String> strings = new LinkedHashSet<>();
+		
+		for (CategoriaProfissional categoria : categorias) {
+			strings.add(categoria.getNome());
+		}
+		
+		return StringUtils.concatenate(strings);
+	}
+	
+}

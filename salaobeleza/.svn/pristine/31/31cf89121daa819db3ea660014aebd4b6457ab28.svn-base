@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layout}" th:with="link=@{/profissional/home}">
+	
+	<body>
+		<div layout:fragment="content">
+			<div>
+				<h1>Configurações</h1>
+				<input type="button" value="Dados básicos" th:onclick="'location.href=\'' + @{/profissional/edit} + '\';'" /><br />
+				<input type="button" value="Servicos" th:onclick="'location.href=\'' + @{/profissional/servicos} + '\';'" /><br />
+				<input type="button" value="Relatório de Pedidos" th:onclick="'location.href=\'' + @{/profissional/relatorio/pedidos} + '\';'" /><br />
+				<input type="button" value="Relatório de Serviços" th:onclick="'location.href=\'' + @{/profissional/relatorio/itens} + '\';'" /><br />
+			</div>
+			<br /><br />
+			<input type="button" value="Sair" th:onclick="'location.href=\'' + @{/logout} + '\';'" /><br />
+		</div>
+	</body>
+</html>
+
