@@ -4,28 +4,28 @@ Sistema desenvolvido com backend Java Spring boot e front HTML básicão.
 
 O sistema é para auxiliar clientes e profissionais dentro de um Salão de Beleza, as principais funcionalidades são:
 
-- Login com identificação se é cliente e rofissional.
+- Login com identificação se é cliente ou profissional.
 
 - Cadastro de Cliente e Profissional.
 
 - Acesso via Cliente:
 
-> Realizar um pedido escolhendo os profissionais/serviços desejados.
+  > Realizar um pedido escolhendo os profissionais/serviços desejados.
 
-> Consultar os pedidos realizados.
+  > Consultar os pedidos realizados.
 
-> Alterar dados do cadastro.
+  > Alterar dados do cadastro.
 
 
 - Acesso via Profissional:
 
-> Alterar dados do cadastro.
+  > Alterar dados do cadastro.
 
-> Cadastrar novos serviços prestados.
+  > Cadastrar novos serviços prestados.
 
-> Consulta por pedidos.
+  > Consulta por pedidos.
 
-> Consultar por serviços.
+  > Consultar por serviços.
 
 
 - Api de validação de pagamento.
